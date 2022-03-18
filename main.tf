@@ -1,15 +1,14 @@
-module "student_alias" {
-  source = "../exercise1"
-  student_alias = var.student_alias
+locals {
+  bucket_name = "sm-di-${var.student_alias}"
 }
 
-module "new_file" {
-  source = "../exercise1"
-  student_alias = var.student_alias
-  filename = module.student_alias.magic_number_content_type
+data "aws_s3_bucket_object" "magic_number" {
+  bucket = local.bucket_name
+  key    = "config/magic_number.txt"
 }
 
-
-resource "null_resource" "abc" {
-
+resource "aws_s3_object" "my_object" {
+  bucket = local.bucket_name
+  key    = var.filename
+  content = "This bucket is reserved for ${var.student_alias} ***ONLY***\n The content type of the magic number file is ${data.aws_s3_bucket_object.magic_number.content_type}" # Usage of variable
 }
