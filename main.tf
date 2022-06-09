@@ -4,7 +4,7 @@ locals {
 
 data "aws_s3_bucket_object" "magic_number" {
   bucket = local.bucket_name
-  key    = "config/magic_number.txt"
+  key    = "preset/${var.student_alias}.txt"
 }
 
 resource "aws_s3_object" "my_object" {
